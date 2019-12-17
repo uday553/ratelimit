@@ -9,11 +9,13 @@ public class Response {
 
 	private String validationFailed="Bad Request";
 	private String success="Successful";
+	private String thresholdCrossed="threshold reached";
 	private String problemInProcessing="problem in processing request";
 	
 	public ResponseEntity validationFailedResponse = new ResponseEntity<String>(validationFailed, HttpStatus.BAD_REQUEST);
 	
 	public ResponseEntity successResponse = new ResponseEntity<String>(success, HttpStatus.OK);
+	public ResponseEntity tresholdCrossedResponse = new ResponseEntity<String>(thresholdCrossed, HttpStatus.FORBIDDEN);
 	
 	public ResponseEntity createdResponse = new ResponseEntity<String>(success, HttpStatus.CREATED);
 	

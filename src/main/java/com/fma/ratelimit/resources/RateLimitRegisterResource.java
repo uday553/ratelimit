@@ -1,5 +1,7 @@
 package com.fma.ratelimit.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping("/ratelimit")
 public class RateLimitRegisterResource {
+	private static final Logger log = LoggerFactory.getLogger(RateLimitRegisterResource.class);
 
 	@Autowired
 	RateLimitRegistrationHandler rateLimitRegistrationHandler;
@@ -23,9 +26,9 @@ public class RateLimitRegisterResource {
 	// API for ratelimit registration
 	@RequestMapping(value = "/register/v1", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> registerMovie(@RequestBody String serviceLimits)
+	public ResponseEntity<String> registerRateLimit(@RequestBody String serviceLimits)
 	{
-
+		log.debug("registerRateLimit Called");
 		return rateLimitRegistrationHandler.register(serviceLimits);
 	}
 

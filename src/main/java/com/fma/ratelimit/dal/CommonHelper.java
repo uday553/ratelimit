@@ -2,6 +2,7 @@ package com.fma.ratelimit.dal;
 
 
 import com.fma.ratelimit.exceptions.ParsingFailedException;
+import com.fma.ratelimit.handlers.ServiceAccessHandler;
 import com.fma.ratelimit.request.pojos.RegisterRateLimitBean;
 import com.fma.ratelimit.request.pojos.ServiceLimits;
 import com.google.gson.Gson;
@@ -17,12 +18,14 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CommonHelper {
-
-    public static ServiceLimits getRateLimits(String URL) throws ParsingFailedException
+	private static final Logger log = LoggerFactory.getLogger(CommonHelper.class);
+    public ServiceLimits getRateLimits(String URL) throws ParsingFailedException
     {
         try {
             Gson parser = new Gson();
@@ -34,7 +37,7 @@ public class CommonHelper {
         }
     }
     
-    public static RegisterRateLimitBean  getRateLimitBean(String serviceName,String apiName,String type)
+    public RegisterRateLimitBean  getRateLimitBean(String serviceName,String apiName,String type)
     {
         RegisterRateLimitBean rrlb = new RegisterRateLimitBean();
         rrlb.setService(serviceName);
@@ -43,19 +46,19 @@ public class CommonHelper {
         return rrlb;
     }
 
-    public static String getObjectToJson(Object obj)
+    public String getObjectToJson(Object obj)
     {
         Gson gson = new Gson();
         System.out.println(gson.toJson(obj));
         return gson.toJson(obj);
     }
     
-    public static String getServiceHash(Object object)
+    public String getServiceHash(Object object)
     {
         return getHashOfString(getObjectToJson(object));
     }
     
-    public static String getHashOfString (String str)
+    public String getHashOfString (String str)
     {
         if(str!=null) {
             try {
@@ -65,6 +68,7 @@ public class CommonHelper {
                 for (byte b : hashInBytes) {
                     sb.append(String.format("%02x", b));
                 }
+                log.debug("{}",sb.toString());
                 return sb.toString();
             } catch (Exception exp) {
                 System.err.println(" exp : " + exp.getMessage());
@@ -72,7 +76,7 @@ public class CommonHelper {
         }
         return null;
     }
-    private static String getURLResponse(String URL){
+    private String getURLResponse(String URL){
 
         try {
             URL obj = new URL(URL);

@@ -1,5 +1,7 @@
 package com.fma.ratelimit.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +16,7 @@ import com.fma.ratelimit.request.pojos.ServiceAccessRequestPojo;
 @RestController
 @RequestMapping("/service/ratelimit")
 public class RateLimitCheckResource {
-
+	private static final Logger log = LoggerFactory.getLogger(RateLimitCheckResource.class);
 
 	@Autowired
 	ServiceAccessHandler serviceAccessHandler;
@@ -24,7 +26,7 @@ public class RateLimitCheckResource {
 	@ResponseBody
 	public ResponseEntity<String> accessService(@RequestBody ServiceAccessRequestPojo serviceAccessRequestPojo)
 	{
-		System.out.println(serviceAccessRequestPojo);
+		log.debug("{}",serviceAccessRequestPojo);
 		return serviceAccessHandler.access(serviceAccessRequestPojo);
 	}
 	
